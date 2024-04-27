@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fakestore</title>
+</head>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    nav {
+        margin: auto;
+        width: 99%;
+        border: 1px solid black;
+        height: 3.5rem;
+        background-color: rgb(4, 70, 70);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    nav>div>h1 {
+        color: whitesmoke;
+    }
+
+    #hero_section {
+        width: 99%;
+        margin: auto;
+        display: grid;
+        margin-top: 1rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: .5rem;
+
+    }
+
+    #hero_section>div {
+        position: relative;
+        /* border: 1px solid black; */
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        border-radius: .5rem;
+        padding: .5rem;
+    }
+
+    #hero_section>div>img {
+        position: relative;
+        left: 50%;
+        width: 10rem;
+        aspect-ratio: 1;
+    }
+</style>
+
+<body>
+    <nav>
+        <div>
+            <h1>Product Listing Page</h1>
+        </div>
+        <div>
+            <select name="category" id="category" >
+                <option value="select">select</option>
+                <option value="mens">men's</option>
+                <option value="womens">women's </option>
+                <option value="jewelery">jewelery</option>
+                <option value="electronics">electronics</option>
+            </select>
+            <input type="text" name="title" id="title" placeholder="search Product" value="">
+        </div>
+        <div>
+            <select name="price" id="price">
+                <option value="select" >select</option>
+                <option value="lowtohigh" >Low to High</option>
+                <option value="hightolow" >High to Low</option>
+            </select>
+        </div>
+    </nav>
+    <div id="hero_section">
+    </div>
+</body>
+<script>
+
+    let price = document.getElementById('price')
+    let category = document.getElementById('category')
+ 
+    let hero_section = document.getElementById('hero_section')
+    let searchbar=document.getElementById('title')
+    const fetchData = async () => {
+        let data = await fetch('https://fakestoreapi.com/products')
+        data = await data.json()
+        showProduct(data)
+        // console.log(data)
+    }
+
+    const showProduct = (products) => {
+
+        products.map(ele => {
+            let div = document.createElement('div')
+            let img = document.createElement('img')
+            let P_price = document.createElement('p')
+            let P_title = document.createElement('h2')
+            img.src = ele.image
+            P_price.textContent = `Rs ${ele.price}`
+            P_title.textContent = ele.title
+            div.append(img, P_title, P_price)
+            hero_section.append(div)
+        })
+    }
+
+    fetchData()
+</script>
+
+</html>
