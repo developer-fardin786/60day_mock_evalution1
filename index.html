@@ -60,7 +60,7 @@
             <h1>Product Listing Page</h1>
         </div>
         <div>
-            <select name="category" id="category" >
+            <select name="category" id="category">
                 <option value="select">select</option>
                 <option value="mens">men's</option>
                 <option value="womens">women's </option>
@@ -70,10 +70,9 @@
             <input type="text" name="title" id="title" placeholder="search Product" value="">
         </div>
         <div>
-            <select name="price" id="price">
-                <option value="select" >select</option>
-                <option value="lowtohigh" >Low to High</option>
-                <option value="hightolow" >High to Low</option>
+            <select name="sort" id="sort" >
+                <option value="asc">Low to High</option>
+                <option value="dsc">High to Low</option>
             </select>
         </div>
     </nav>
@@ -81,21 +80,26 @@
     </div>
 </body>
 <script>
-
-    let price = document.getElementById('price')
+   
+    let price = document.getElementById('sort')
     let category = document.getElementById('category')
- 
+
     let hero_section = document.getElementById('hero_section')
-    let searchbar=document.getElementById('title')
+    let searchbar = document.getElementById('title')
     const fetchData = async () => {
-        let data = await fetch('https://fakestoreapi.com/products')
-        data = await data.json()
-        showProduct(data)
-        // console.log(data)
+        
+    // console.log(price.value, 'price');
+    let data = await fetch('https://fakestoreapi.com/products');
+    data = await data.json();
+    if (price.value === 'asc') {
+        data = data.sort((a, b) => a.price - b.price);
+    } else if (price.value === 'dsc') {
+        data = data.sort((a, b) => b.price - a.price);
     }
-
+    showProduct(data);
+};
     const showProduct = (products) => {
-
+        hero_section.innerHTML = '';
         products.map(ele => {
             let div = document.createElement('div')
             let img = document.createElement('img')
@@ -110,6 +114,7 @@
     }
 
     fetchData()
+    price.addEventListener('change', fetchData);
 </script>
 
 </html>
